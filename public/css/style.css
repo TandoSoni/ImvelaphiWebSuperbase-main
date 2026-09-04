@@ -274,6 +274,7 @@ img { max-width:100%; display:block; }
 .checkout-panel-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:20px; }
 .checkout-panel-head h2 { font:700 1.25rem var(--font-display); color:var(--ink); }
 .checkout-panel-head > span { color:var(--muted); font-size:.8rem; }
+.preview-notice { margin:-4px 0 18px; padding:11px 13px; border:1px solid #e8c46b; border-radius:6px; background:#fff8df; color:#6b4f00; font-size:.78rem; }
 .checkout-item { display:grid; grid-template-columns:72px 1fr auto; gap:14px; align-items:center; padding:0 0 18px; margin-bottom:18px; border-bottom:1px solid var(--line); }
 .checkout-item img { width:72px; height:72px; object-fit:cover; border-radius:7px; }
 .checkout-item-copy strong, .checkout-item-copy span { display:block; }

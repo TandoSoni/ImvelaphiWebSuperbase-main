@@ -12,7 +12,7 @@
 
 <main class="section checkout-main"><div class="container"><div class="eyebrow">Your order</div><h1>Finish your build.</h1><div class="checkout-layout">
   <section class="checkout-panel"><div class="checkout-panel-head"><h2>Order summary</h2><span><span data-cart-count>0</span> items</span></div><div id="checkoutItems"></div><a class="checkout-back" href="products.html"><i class="fa-solid fa-plus"></i> Add another product</a></section>
-  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Delivery details</h2></div><form id="orderForm" class="order-form" novalidate><div class="field-row"><div class="field"><label for="orderFirstName">First name</label><input id="orderFirstName" required autocomplete="given-name"><small class="field-error" id="orderFirstNameError"></small></div><div class="field"><label for="orderLastName">Last name</label><input id="orderLastName" required autocomplete="family-name"><small class="field-error" id="orderLastNameError"></small></div></div><div class="field"><label for="orderEmail">Email</label><input id="orderEmail" type="email" required placeholder="you@example.com" autocomplete="email"><small class="field-error" id="orderEmailError"></small></div><div class="field"><label for="orderPhone">Phone</label><input id="orderPhone" type="tel" required placeholder="082 000 0000" autocomplete="tel"><small class="field-error" id="orderPhoneError"></small></div><div class="field"><label for="orderAddress">Delivery address</label><textarea id="orderAddress" rows="3" required placeholder="Street address, suburb, city and province" autocomplete="street-address"></textarea><small class="field-error" id="orderAddressError"></small></div><div class="field"><label for="orderNotes">Order notes <span>(optional)</span></label><textarea id="orderNotes" rows="2" placeholder="Anything our team should know?"></textarea></div><div class="checkout-total"><div><span>Subtotal</span><strong data-subtotal>R0</strong></div><div><span>Delivery</span><strong data-delivery>R0</strong></div><div class="grand-total"><span>Total</span><strong data-order-total>R0</strong></div></div><button id="placeOrder" class="btn btn-primary btn-block" type="submit">Place order request <i class="fa-solid fa-arrow-right"></i></button><p class="checkout-note"><i class="fa-solid fa-circle-info"></i> We will confirm stock and send a secure payment link by email.</p></form><div id="orderSuccess" class="order-success" hidden><i class="fa-solid fa-circle-check"></i><h2>Order request successful.</h2><p>Your order request has been saved to our database. The Imvelaphi team will contact you shortly to confirm delivery and payment.</p><strong class="order-reference">Order reference: <span id="orderReference"></span></strong><a class="btn btn-primary" href="products.html">Keep exploring</a></div></section>
+  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Delivery details</h2></div><div id="previewNotice" class="preview-notice" hidden></div><form id="orderForm" class="order-form" novalidate><div class="field-row"><div class="field"><label for="orderFirstName">First name</label><input id="orderFirstName" required autocomplete="given-name"><small class="field-error" id="orderFirstNameError"></small></div><div class="field"><label for="orderLastName">Last name</label><input id="orderLastName" required autocomplete="family-name"><small class="field-error" id="orderLastNameError"></small></div></div><div class="field"><label for="orderEmail">Email</label><input id="orderEmail" type="email" required placeholder="you@example.com" autocomplete="email"><small class="field-error" id="orderEmailError"></small></div><div class="field"><label for="orderPhone">Phone</label><input id="orderPhone" type="tel" required placeholder="082 000 0000" autocomplete="tel"><small class="field-error" id="orderPhoneError"></small></div><div class="field"><label for="orderAddress">Delivery address</label><textarea id="orderAddress" rows="3" required placeholder="Street address, suburb, city and province" autocomplete="street-address"></textarea><small class="field-error" id="orderAddressError"></small></div><div class="field"><label for="orderNotes">Order notes <span>(optional)</span></label><textarea id="orderNotes" rows="2" placeholder="Anything our team should know?"></textarea></div><div class="checkout-total"><div><span>Subtotal</span><strong data-subtotal>R0</strong></div><div><span>Delivery</span><strong data-delivery>R0</strong></div><div class="grand-total"><span>Total</span><strong data-order-total>R0</strong></div></div><button id="placeOrder" class="btn btn-primary btn-block" type="submit">Place order request <i class="fa-solid fa-arrow-right"></i></button><p class="checkout-note"><i class="fa-solid fa-circle-info"></i> We will confirm stock and send a secure payment link by email.</p></form><div id="orderSuccess" class="order-success" hidden><i class="fa-solid fa-circle-check"></i><h2>Order request successful.</h2><p id="orderSuccessMessage">Your order request has been saved to our database. The Imvelaphi team will contact you shortly to confirm delivery and payment.</p><strong class="order-reference">Order reference: <span id="orderReference"></span></strong><a class="btn btn-primary" href="products.html">Keep exploring</a></div></section>
 </div></div></main>
 <footer class="footer"><div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div></footer>
 <script src="js/shop.js"></script><script>
@@ -30,6 +30,17 @@ function showOrderError(message) {
   }
   error.textContent = message;
   error.hidden = false;
+}
+
+const isDemoMode = new URLSearchParams(window.location.search).get('demo') === '1';
+const apiOrigin = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+const previewNotice = document.getElementById('previewNotice');
+if (isDemoMode) {
+  previewNotice.textContent = 'Preview mode: this test will show the success screen but will not write to the database.';
+  previewNotice.hidden = false;
+} else if (window.location.protocol === 'file:') {
+  previewNotice.textContent = 'This page is opened as a file. Start the Imvelaphi server at http://localhost:3000 for real database orders, or add ?demo=1 to test the success screen only.';
+  previewNotice.hidden = false;
 }
 
 function validateOrderFields() {
@@ -76,10 +87,19 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
   const button = document.getElementById('placeOrder');
   button.disabled = true;
   button.innerHTML = 'Sending order request...';
+  if (isDemoMode) {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    saveShopCart({});
+    this.hidden = true;
+    document.getElementById('orderReference').textContent = 'DEMO-' + Date.now();
+    document.getElementById('orderSuccessMessage').textContent = 'Preview completed. This demo was not saved to the database; run the server to test a real order.';
+    document.getElementById('orderSuccess').hidden = false;
+    return;
+  }
   const token = localStorage.getItem('imv_access_token');
   let response;
   try {
-    response = await fetch('/api/orders', {
+    response = await fetch(apiOrigin + '/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify({
