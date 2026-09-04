@@ -6,6 +6,7 @@ const { authRequired, roleRequired } = require('../middleware/auth');
 const { courseProgress } = require('./courses');
 
 const router = express.Router();
+const uploadDir = path.resolve(__dirname, '..', '..', process.env.UPLOAD_DIR || 'uploads');
 
 /* Storage: videos and docs land in /uploads. This is the actual
    "space for video" reserved on disk — until a lecturer uploads
@@ -13,14 +14,14 @@ const router = express.Router();
    placeholder instead of pretending there's real content. */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = file.fieldname === 'video' ? 'uploads/videos' : 'uploads/docs';
-    cb(null, path.join(__dirname, '..', '..', dir));
+    const dir = file.fieldname === 'video' ? 'videos' : 'docs';
+    cb(null, path.join(uploadDir, dir));
   },
   filename: (req, file, cb) => cb(null, `${uid('file')}${path.extname(file.originalname)}`)
 });
 const upload = multer({
   storage,
-  limits: { fileSize: 500 * 1024 * 1024 },
+  limits: { fileSize: Number(process.env.MAX_UPLOAD_BYTES) || 500 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.fieldname === 'video' && !file.mimetype.startsWith('video/')) return cb(new Error('Video field must be a video file.'));
     if (file.fieldname === 'doc' && !/pdf|word|officedocument/.test(file.mimetype)) return cb(new Error('Doc field must be a PDF or Word file.'));

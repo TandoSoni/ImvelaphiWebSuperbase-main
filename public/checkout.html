@@ -38,9 +38,6 @@ const previewNotice = document.getElementById('previewNotice');
 if (isDemoMode) {
   previewNotice.textContent = 'Preview mode: this test will show the success screen but will not write to the database.';
   previewNotice.hidden = false;
-} else if (window.location.protocol === 'file:') {
-  previewNotice.textContent = 'This page is opened as a file. Start the Imvelaphi server at http://localhost:3000 for real database orders, or add ?demo=1 to test the success screen only.';
-  previewNotice.hidden = false;
 }
 
 function validateOrderFields() {
