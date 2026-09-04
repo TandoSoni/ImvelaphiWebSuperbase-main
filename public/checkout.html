@@ -12,7 +12,7 @@
 
 <main class="section checkout-main"><div class="container"><div class="eyebrow">Your order</div><h1>Finish your build.</h1><div class="checkout-layout">
   <section class="checkout-panel"><div class="checkout-panel-head"><h2>Order summary</h2><span><span data-cart-count>0</span> items</span></div><div id="checkoutItems"></div><a class="checkout-back" href="products.html"><i class="fa-solid fa-plus"></i> Add another product</a></section>
-  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Delivery details</h2></div><form id="orderForm" class="order-form"><div class="field-row"><div class="field"><label for="orderFirstName">First name</label><input id="orderFirstName" required></div><div class="field"><label for="orderLastName">Last name</label><input id="orderLastName" required></div></div><div class="field"><label for="orderEmail">Email</label><input id="orderEmail" type="email" required placeholder="you@example.com"></div><div class="field"><label for="orderPhone">Phone</label><input id="orderPhone" type="tel" required placeholder="082 000 0000"></div><div class="field"><label for="orderAddress">Delivery address</label><textarea id="orderAddress" rows="3" required placeholder="Street address, suburb, city and province"></textarea></div><div class="field"><label for="orderNotes">Order notes <span>(optional)</span></label><textarea id="orderNotes" rows="2" placeholder="Anything our team should know?"></textarea></div><div class="checkout-total"><div><span>Subtotal</span><strong data-subtotal>R0</strong></div><div><span>Delivery</span><strong data-delivery>R0</strong></div><div class="grand-total"><span>Total</span><strong data-order-total>R0</strong></div></div><button id="placeOrder" class="btn btn-primary btn-block" type="submit">Place order request <i class="fa-solid fa-arrow-right"></i></button><p class="checkout-note"><i class="fa-solid fa-circle-info"></i> We will confirm stock and send a secure payment link by email.</p></form><div id="orderSuccess" class="order-success" hidden><i class="fa-solid fa-circle-check"></i><h2>Order request received.</h2><p>Thank you. The Imvelaphi team will contact you shortly to confirm delivery and payment.</p><a class="btn btn-primary" href="products.html">Keep exploring</a></div></section>
+  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Delivery details</h2></div><form id="orderForm" class="order-form"><div class="field-row"><div class="field"><label for="orderFirstName">First name</label><input id="orderFirstName" required></div><div class="field"><label for="orderLastName">Last name</label><input id="orderLastName" required></div></div><div class="field"><label for="orderEmail">Email</label><input id="orderEmail" type="email" required placeholder="you@example.com"></div><div class="field"><label for="orderPhone">Phone</label><input id="orderPhone" type="tel" required placeholder="082 000 0000"></div><div class="field"><label for="orderAddress">Delivery address</label><textarea id="orderAddress" rows="3" required placeholder="Street address, suburb, city and province"></textarea></div><div class="field"><label for="orderNotes">Order notes <span>(optional)</span></label><textarea id="orderNotes" rows="2" placeholder="Anything our team should know?"></textarea></div><div class="checkout-total"><div><span>Subtotal</span><strong data-subtotal>R0</strong></div><div><span>Delivery</span><strong data-delivery>R0</strong></div><div class="grand-total"><span>Total</span><strong data-order-total>R0</strong></div></div><button id="placeOrder" class="btn btn-primary btn-block" type="submit">Place order request <i class="fa-solid fa-arrow-right"></i></button><p class="checkout-note"><i class="fa-solid fa-circle-info"></i> We will confirm stock and send a secure payment link by email.</p></form><div id="orderSuccess" class="order-success" hidden><i class="fa-solid fa-circle-check"></i><h2>Order request successful.</h2><p>Your order request has been saved. The Imvelaphi team will contact you shortly to confirm delivery and payment.</p><a class="btn btn-primary" href="products.html">Keep exploring</a></div></section>
 </div></div></main>
 <footer class="footer"><div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div></footer>
 <script src="js/shop.js"></script><script>
@@ -46,19 +46,27 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
   button.disabled = true;
   button.innerHTML = 'Sending order request...';
   const token = localStorage.getItem('imv_access_token');
-  const response = await fetch('/api/orders', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-    body: JSON.stringify({
-      firstName: document.getElementById('orderFirstName').value.trim(),
-      lastName: document.getElementById('orderLastName').value.trim(),
-      email: document.getElementById('orderEmail').value.trim(),
-      phone: document.getElementById('orderPhone').value.trim(),
-      address: document.getElementById('orderAddress').value.trim(),
-      notes: document.getElementById('orderNotes').value.trim(),
-      items: checkoutItems()
-    })
-  });
+  let response;
+  try {
+    response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: JSON.stringify({
+        firstName: document.getElementById('orderFirstName').value.trim(),
+        lastName: document.getElementById('orderLastName').value.trim(),
+        email: document.getElementById('orderEmail').value.trim(),
+        phone: document.getElementById('orderPhone').value.trim(),
+        address: document.getElementById('orderAddress').value.trim(),
+        notes: document.getElementById('orderNotes').value.trim(),
+        items: checkoutItems()
+      })
+    });
+  } catch {
+    showOrderError('We could not reach the order service. Please try again.');
+    button.disabled = false;
+    button.innerHTML = 'Place order request <i class="fa-solid fa-arrow-right"></i>';
+    return;
+  }
   const result = await response.json().catch(() => null);
   if (!response.ok || !result?.success) {
     showOrderError(result?.message || 'We could not submit your order request. Please try again.');
