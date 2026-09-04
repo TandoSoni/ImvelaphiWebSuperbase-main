@@ -106,6 +106,31 @@ async function createSchema() {
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (enrollment_id, video_id)
   )`);
+
+  await run(`CREATE TABLE IF NOT EXISTS orders (
+    id VARCHAR(64) PRIMARY KEY,
+    user_id VARCHAR(64) NULL REFERENCES users(id),
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(190) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    delivery_address TEXT NOT NULL,
+    notes TEXT NULL,
+    subtotal INT NOT NULL,
+    delivery_fee INT NOT NULL,
+    total INT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'requested',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`);
+
+  await run(`CREATE TABLE IF NOT EXISTS order_items (
+    id VARCHAR(64) PRIMARY KEY,
+    order_id VARCHAR(64) NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id VARCHAR(100) NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    unit_price INT NOT NULL,
+    quantity INT NOT NULL
+  )`);
 }
 
 /* ---------------- Course catalogue ----------------

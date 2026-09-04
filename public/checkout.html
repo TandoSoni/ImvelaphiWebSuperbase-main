@@ -16,9 +16,56 @@
 </div></div></main>
 <footer class="footer"><div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div></footer>
 <script src="js/shop.js"></script><script>
-document.getElementById('orderForm').addEventListener('submit', function(event) {
+function checkoutItems() {
+  return Object.entries(shopCart()).map(([id, quantity]) => ({ id, quantity }));
+}
+
+function showOrderError(message) {
+  let error = document.getElementById('orderError');
+  if (!error) {
+    error = document.createElement('p');
+    error.id = 'orderError';
+    error.className = 'alert alert-error';
+    document.getElementById('orderForm').prepend(error);
+  }
+  error.textContent = message;
+  error.hidden = false;
+}
+
+const cachedUser = JSON.parse(localStorage.getItem('imv_user') || 'null');
+if (cachedUser) {
+  document.getElementById('orderFirstName').value = cachedUser.firstName || '';
+  document.getElementById('orderLastName').value = cachedUser.lastName || '';
+  document.getElementById('orderEmail').value = cachedUser.email || '';
+}
+
+document.getElementById('orderForm').addEventListener('submit', async function(event) {
   event.preventDefault();
   if (!Object.keys(shopCart()).length) return;
+  const button = document.getElementById('placeOrder');
+  button.disabled = true;
+  button.innerHTML = 'Sending order request...';
+  const token = localStorage.getItem('imv_access_token');
+  const response = await fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: JSON.stringify({
+      firstName: document.getElementById('orderFirstName').value.trim(),
+      lastName: document.getElementById('orderLastName').value.trim(),
+      email: document.getElementById('orderEmail').value.trim(),
+      phone: document.getElementById('orderPhone').value.trim(),
+      address: document.getElementById('orderAddress').value.trim(),
+      notes: document.getElementById('orderNotes').value.trim(),
+      items: checkoutItems()
+    })
+  });
+  const result = await response.json().catch(() => null);
+  if (!response.ok || !result?.success) {
+    showOrderError(result?.message || 'We could not submit your order request. Please try again.');
+    button.disabled = false;
+    button.innerHTML = 'Place order request <i class="fa-solid fa-arrow-right"></i>';
+    return;
+  }
   saveShopCart({});
   this.hidden = true;
   document.getElementById('orderSuccess').hidden = false;

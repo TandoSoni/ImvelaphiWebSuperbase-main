@@ -21,6 +21,14 @@ function authRequired(req, res, next) {
   }
 }
 
+function authOptional(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return next();
+  try { req.user = jwt.verify(token, ACCESS_TOKEN_SECRET); } catch { /* Guest checkout is still allowed. */ }
+  next();
+}
+
 function roleRequired(...roles) {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {
@@ -30,4 +38,4 @@ function roleRequired(...roles) {
   };
 }
 
-module.exports = { authRequired, roleRequired, signAccessToken, signRefreshToken, verifyRefreshToken };
+module.exports = { authRequired, authOptional, roleRequired, signAccessToken, signRefreshToken, verifyRefreshToken };

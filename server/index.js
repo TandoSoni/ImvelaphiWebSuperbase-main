@@ -10,6 +10,7 @@ const { router: courseRoutes } = require('./routes/courses');
 const lecturerRoutes = require('./routes/lecturer');
 const adminRoutes = require('./routes/admin');
 const chatRoutes = require('./routes/chat');
+const orderRoutes = require('./routes/orders');
 
 // Ensure upload folders exist (this is the reserved "space for video")
 ['uploads/videos', 'uploads/docs'].forEach(dir => {
@@ -29,6 +30,7 @@ async function main() {
   app.use('/api/lecturer', lecturerRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/chat', chatRoutes);
+  app.use('/api/orders', orderRoutes);
 
   app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
