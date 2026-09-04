@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | Imvelaphi Technologies</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="checkout-page">
+<nav class="navbar"><a href="index.html" class="logo"><div class="mark"><img src="images/logo.png" alt="Imvelaphi Technologies logo"></div></a><div class="nav-links"><a class="link" href="products.html"><i class="fa-solid fa-arrow-left"></i> Continue shopping</a><span class="checkout-secure"><i class="fa-solid fa-lock"></i> Secure checkout</span></div></nav>
+
+<main class="section checkout-main"><div class="container"><div class="eyebrow">Your order</div><h1>Finish your build.</h1><div class="checkout-layout">
+  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Order summary</h2><span><span data-cart-count>0</span> items</span></div><div id="checkoutItems"></div><a class="checkout-back" href="products.html"><i class="fa-solid fa-plus"></i> Add another product</a></section>
+  <section class="checkout-panel"><div class="checkout-panel-head"><h2>Delivery details</h2></div><form id="orderForm" class="order-form"><div class="field-row"><div class="field"><label for="orderFirstName">First name</label><input id="orderFirstName" required></div><div class="field"><label for="orderLastName">Last name</label><input id="orderLastName" required></div></div><div class="field"><label for="orderEmail">Email</label><input id="orderEmail" type="email" required placeholder="you@example.com"></div><div class="field"><label for="orderPhone">Phone</label><input id="orderPhone" type="tel" required placeholder="082 000 0000"></div><div class="field"><label for="orderAddress">Delivery address</label><textarea id="orderAddress" rows="3" required placeholder="Street address, suburb, city and province"></textarea></div><div class="field"><label for="orderNotes">Order notes <span>(optional)</span></label><textarea id="orderNotes" rows="2" placeholder="Anything our team should know?"></textarea></div><div class="checkout-total"><div><span>Subtotal</span><strong data-subtotal>R0</strong></div><div><span>Delivery</span><strong data-delivery>R0</strong></div><div class="grand-total"><span>Total</span><strong data-order-total>R0</strong></div></div><button id="placeOrder" class="btn btn-primary btn-block" type="submit">Place order request <i class="fa-solid fa-arrow-right"></i></button><p class="checkout-note"><i class="fa-solid fa-circle-info"></i> We will confirm stock and send a secure payment link by email.</p></form><div id="orderSuccess" class="order-success" hidden><i class="fa-solid fa-circle-check"></i><h2>Order request received.</h2><p>Thank you. The Imvelaphi team will contact you shortly to confirm delivery and payment.</p><a class="btn btn-primary" href="products.html">Keep exploring</a></div></section>
+</div></div></main>
+<footer class="footer"><div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div></footer>
+<script src="js/shop.js"></script><script>
+document.getElementById('orderForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  if (!Object.keys(shopCart()).length) return;
+  saveShopCart({});
+  this.hidden = true;
+  document.getElementById('orderSuccess').hidden = false;
+});
+</script>
+</body>
+</html>

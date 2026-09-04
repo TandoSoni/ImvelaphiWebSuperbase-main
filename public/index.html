@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imvelaphi Technologies</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <div class="mark"><img src="images/logo.png" alt="Imvelaphi Technologies logo"></div>
+  </a>
+  <div class="nav-links">
+    <a class="link hide-mobile" href="#courses">Courses</a>
+    <a class="link hide-mobile" href="products.html">Shop kits</a>
+    <a class="link hide-mobile" href="#about">About</a>
+    <a class="link hide-mobile" href="#gallery">Gallery</a>
+    <button class="cart-trigger" onclick="toggleCart()" aria-label="Open shopping cart"><i class="fa-solid fa-basket-shopping"></i><span>Cart</span><b id="cartCount">0</b></button>
+    <a class="link" onclick="openAuth('login')">Log in</a>
+    <a class="btn btn-primary btn-sm" onclick="openAuth('register')">Get started</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <h2><em>Imvelaphi Technologies</em></h2>
+    <div class="hero-buttons">
+      <a class="btn btn-primary" onclick="openAuth('register')">Enrol as a student</a>
+      <a class="btn btn-outline hero-outline" href="#kits">Shop robotics kits</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>20+ kits</b><span>Built for real projects</span></div>
+      <div class="stat"><b>South African</b><span>Designed in our lab</span></div>
+      <div class="stat"><b>Beginner-ready</b><span>Learn by building</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section shop-section" id="kits">
+  <div class="container">
+    <div class="shop-intro">
+      <div class="section-head">
+        <div class="eyebrow">The Imvelaphi Lab Shop</div>
+        <h3>Take the lab home.</h3>
+        <p>Curated robotics kits with the parts, project guide and confidence to build something that moves, senses and thinks.</p>
+      </div>
+      <div class="shop-proof"><i class="fa-solid fa-shield-halved"></i><span><strong>Built for curious hands</strong><br>Tested in our learner workshops</span></div>
+    </div>
+    <div class="shop-toolbar">
+      <div class="shop-filters" role="group" aria-label="Filter kits">
+        <button class="filter-chip active" onclick="filterProducts('all', this)">All kits</button>
+        <button class="filter-chip" onclick="filterProducts('starter', this)">Starter</button>
+        <button class="filter-chip" onclick="filterProducts('classroom', this)">Classroom</button>
+        <button class="filter-chip" onclick="filterProducts('advanced', this)">Advanced</button>
+      </div>
+      <label class="shop-search"><i class="fa-solid fa-magnifying-glass"></i><input id="productSearch" type="search" placeholder="Search kits" oninput="renderProducts()"></label>
+    </div>
+    <div class="catalog-status" id="catalogStatus"></div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="bulk-order"><div><span class="eyebrow">For schools and makerspaces</span><h4>Building a bigger programme?</h4><p>Ask about classroom bundles, educator training and delivery for your institution.</p></div><a class="btn btn-outline" href="mailto:hello@imvelaphi.co.za?subject=Robotics%20kit%20bulk%20order">Request a quote <i class="fa-solid fa-arrow-right"></i></a></div>
+    <div class="shop-footnote"><i class="fa-solid fa-truck-fast"></i> Free delivery in South Africa on orders over R1,200 <span></span> <i class="fa-solid fa-book-open"></i> Includes a printed project guide</div>
+  </div>
+</section>
+
+<section class="section section-photo-dark" id="about">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">About us</div>
+      <h3>Imvelaphi Technologies</h3>
+      <p>Imvelaphi Technologies stands at the forefront of science, technology and engineering — pioneering robotics, biotechnology and 3D-printing solutions tailored to empower the disabled community, including custom, cost-effective 3D-printed prosthetic limbs with robotic elements.</p>
+    </div>
+
+    <div class="about-pair">
+      <div class="about-copy">
+        <h4>Hands-on learning for young innovators</h4>
+        <p>We teach real robotics, electronics and IoT skills through practical workshops. Every learner builds working projects and gains confidence in hardware, software and systems thinking.</p>
+      </div>
+      <div class="feature-shot about-image">
+        <img src="images/about-team.jpg" alt="Imvelaphi Technologies founder teaching an electronics and logic-gates workshop">
+        <p class="photo-caption">A real Imvelaphi Technologies workshop session — hands-on electronics and logic-gate training with our students.</p>
+      </div>
+    </div>
+
+    <div class="about-pair reverse">
+      <div class="feature-shot about-image">
+        <img src="images/about-prosthetic.jpg" alt="3D-printed robotic prosthetic hand built at Imvelaphi Technologies">
+        <p class="photo-caption">One of our 3D-printed, robotics-enabled prosthetic hands, built and wired in the Imvelaphi lab.</p>
+      </div>
+      <div class="about-copy">
+        <h4>Engineering solutions with purpose</h4>
+        <p>Our lab combines prosthetics, robotics and assistive technology to build affordable, real-world devices. The same design mindset powers our training programmes and community impact work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="courses">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Featured tracks</div>
+      <h3>Pick a course, watch the lessons, and prove what you know with a quiz</h3>
+      <p>Explore the pictures below to see the lab work and projects behind every course.</p>
+    </div>
+    <div class="grid" id="courseGrid"></div>
+  </div>
+</section>
+
+<section class="section section-gallery-dark" id="gallery">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Gallery</div>
+      <h3>Inside the lab</h3>
+      <p>A look at the robotics, electronics and prosthetics work coming out of Imvelaphi Technologies.</p>
+    </div>
+    <div class="gallery-carousel">
+      <button class="gallery-arrow gallery-prev" onclick="prevGalleryImage()" aria-label="Previous picture">&#10094;</button>
+      <div class="gallery-carousel-viewport">
+        <div class="gallery-item active" onclick="openLightbox(0)"><img src="images/gallery-1.jpg" alt="Imvelaphi lab work"></div>
+        <div class="gallery-item" onclick="openLightbox(1)"><img src="images/gallery-2.jpg" alt="Imvelaphi lab work"></div>
+        <div class="gallery-item" onclick="openLightbox(2)"><img src="images/gallery-3.jpg" alt="Imvelaphi lab work"></div>
+        <div class="gallery-item" onclick="openLightbox(3)"><img src="images/gallery-4.jpg" alt="Imvelaphi lab work"></div>
+        <div class="gallery-item" onclick="openLightbox(4)"><img src="images/gallery-5.jpg" alt="Imvelaphi lab work"></div>
+        <div class="gallery-item" onclick="openLightbox(5)"><img src="images/lab-feature-2.jpg" alt="Imvelaphi tech lab render"></div>
+      </div>
+      <button class="gallery-arrow gallery-next" onclick="nextGalleryImage()" aria-label="Next picture">&#10095;</button>
+    </div>
+    <div class="gallery-dots" id="galleryDots"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  <button class="lightbox-nav lightbox-prev" onclick="stepLightbox(-1)" aria-label="Previous picture">&#10094;</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" onclick="stepLightbox(1)" aria-label="Next picture">&#10095;</button>
+</div>
+
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+  <div class="cart-head"><div><span class="eyebrow">Your order</span><h3>Shopping cart</h3></div><button class="close-x cart-close" onclick="toggleCart()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-basket-shopping"></i><p>Your cart is waiting for its first build.</p><a href="#kits" onclick="toggleCart()">Browse kits</a></div></div>
+  <div class="cart-summary"><div><span>Subtotal</span><strong id="cartTotal">R0</strong></div><small>Delivery calculated at checkout</small><button class="btn btn-primary btn-block" onclick="beginCheckout()">Continue to checkout <i class="fa-solid fa-arrow-right"></i></button></div>
+</aside>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<section class="section dark">
+  <div class="container section-center">
+    <div class="rule center section-rule"></div>
+    <h3>Three roles, one platform</h3>
+    <p class="section-sub">Students learn and track progress. Lecturers upload content and follow every learner's performance. Admins oversee the whole programme.</p>
+    <div class="grid">
+      <div class="card role-card">
+        <div class="icon-badge"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h4>Student</h4>
+        <p>Watch course videos, take quizzes, and see your progress grow on your dashboard.</p>
+      </div>
+      <div class="card role-card">
+        <div class="icon-badge"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <h4>Lecturer</h4>
+        <p>Upload videos and documents, and monitor every learner's progress and quiz scores.</p>
+      </div>
+      <div class="card role-card">
+        <div class="icon-badge"><i class="fa-solid fa-user-shield"></i></div>
+        <h4>Admin</h4>
+        <p>Oversee learners, lecturers and course catalogue across the programme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="images/logo.png" alt="Imvelaphi Technologies logo" class="footer-logo">
+      <div>
+        <h5>Imvelaphi Technologies</h5>
+        <p>Robotics · Biotechnology · 3D printing · Skills development</p>
+      </div>
+    </div>
+    <div>
+      <h5>Learn</h5>
+      <p><a href="#courses" class="footer-link">Course catalogue</a></p>
+      <p><a href="#gallery" class="footer-link">Gallery</a></p>
+    </div>
+  </div>
+  <div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div>
+</footer>
+
+<!-- Auth Modal -->
+<div id="authModal" class="modal-backdrop">
+  <div class="modal-box">
+    <button class="close-x" onclick="closeAuth()"><i class="fa-solid fa-xmark"></i></button>
+    <h2 id="authTitle">Welcome back</h2>
+    <p class="modal-sub" id="authSub">Log in to continue your courses.</p>
+    <div id="alertMessage" class="alert"></div>
+
+    <!-- Login -->
+    <form id="loginForm">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      <p class="switch-line">New here? <a onclick="showRegister()">Create an account</a></p>
+    </form>
+
+    <!-- Register (students only — lecturer accounts are created by an admin) -->
+    <form id="registerForm" class="hidden">
+      <p class="modal-note">This creates a <strong>student</strong> account and enrols you in every course. Lecturer and admin accounts are set up by the Imvelaphi team.</p>
+      <div class="field-row">
+        <div class="field"><label>First name</label><input type="text" id="regFirstName" required></div>
+        <div class="field"><label>Last name</label><input type="text" id="regLastName" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Age</label><input type="number" id="regAge" min="5" max="100" required></div>
+        <div class="field">
+          <label>Gender</label>
+          <select id="regGender" required>
+            <option value="">Select…</option>
+            <option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input type="text" id="regLocation" placeholder="City, Province" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="regEmail" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="regPassword" required minlength="4">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      <p class="switch-line">Already registered? <a onclick="showLogin()">Log in</a></p>
+    </form>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  mountChatWidget();
+
+  async function renderCourses() {
+    const grid = document.getElementById('courseGrid');
+    const data = await STORE.getCourses();
+    if (!data.success) return;
+    grid.innerHTML = data.courses.map(c => `
+      <div class="card" onclick="openAuth('register')">
+        ${c.imageUrl ? `<img class="card-img" src="${c.imageUrl}" alt="${c.title}">` : ''}
+        <span class="tag">${c.tag}</span>
+        <div class="icon-badge"><i class="${c.icon}"></i></div>
+        <h4>${c.title}</h4>
+        <p>${c.description}</p>
+      </div>`).join('');
+  }
+  renderCourses();
+
+  const products = {
+    maker: { name:'Advanced Maker Space Kit', price:46990, type:'advanced', image:'images/photo-10.jpeg', text:'A complete maker-space foundation for deeper engineering projects and creative exploration.' },
+    elf23: { name:'23-in-1 Customization Kit', price:10990, type:'classroom', image:'images/photo-11.jpeg', text:'Move beyond fixed models with a versatile platform for programming, design and systems thinking.' },
+    elf24: { name:'24-in-1 Customization Kit', price:10990, type:'classroom', image:'images/photo-12.jpeg', text:'A STEM engineering platform with up to 24 different intelligent projects to build and test.' },
+    elf26: { name:'26-in-1 Customization Kit', price:10990, type:'advanced', image:'images/photo-13.jpeg', text:'Push creative engineering further with a high-level kit for ambitious learners.' },
+    elf17: { name:'17-in-1 Customization Kit', price:10990, type:'classroom', image:'images/photo-14.jpeg', text:'Design, customize and program your own intelligent projects with a flexible learning system.' },
+    factory: { name:'AI Factory Robot Kit', price:12990, type:'advanced', image:'images/photo-15.jpeg', text:'Bring artificial intelligence into real-world industrial scenarios and guided builds.' },
+    sumo: { name:'Trigram SUMO Robot Kit', price:12990, type:'advanced', image:'images/photo-16.jpeg', text:'Hands-on robotics competition kit for balance, mechanics and strategy.' },
+    home: { name:'AI Smart Home Learning Kit', price:12990, type:'classroom', image:'images/tech-lab-showcase.jpg', text:'Explore smart home automation and practical AI through project-based learning.' },
+    agriculture: { name:'AI Smart Agriculture System', price:19990, type:'advanced', image:'images/gallery-5.jpg', text:'Learn how AI and smart technology are transforming agriculture.' },
+    starter: { name:'Starter Maker Space Kit', price:34990, type:'classroom', image:'images/lab-hero.jpg', text:'A serious creative toolkit for making, tinkering and problem-solving.' },
+    inventor: { name:'Home Inventor Kit', price:3990, type:'starter', image:'images/gallery-1.jpg', text:'Design and programme smart projects while learning core electronics and coding.' },
+    greenA: { name:'Our Green World - Python Learning Kit A', price:3990, type:'starter', image:'images/gallery-2.jpg', text:'Learn Python through sustainability, environmental awareness and real-world projects.' },
+    weebot: { name:'WeeBot mini STEM Robot V2.0', price:3990, type:'starter', image:'images/gallery-3.jpg', text:'An approachable robot for hands-on programming, engineering and robotics.' },
+    aiot: { name:'WeeCore Bot AIoT Programming Robot', price:3990, type:'classroom', image:'images/gallery-4.jpg', text:'Explore connected technology and artificial intelligence with guided builds.' },
+    elfK210: { name:'ELF AIoT K210 Mainboard', price:3990, type:'advanced', image:'images/gallery-5.jpg', text:'Build AIoT capability with machine vision, sensors and connected devices.' },
+    machine: { name:'AI Machine Learning Advanced Pack', price:3990, type:'advanced', image:'images/lab-feature-1.jpg', text:'Explore machine learning concepts through practical components and scenarios.' },
+    lunar: { name:'Lunar-Exploration Project Field Kit', price:3990, type:'classroom', image:'images/lab-feature-2.jpg', text:'A hands-on mission kit for testing, exploring and refining robotic ideas.' },
+    iot: { name:'IoT Learning Kit (ESP32)', price:4990, type:'starter', image:'images/gallery-2.jpg', text:'Build connected devices around the popular ESP32 microcontroller.' },
+    jeep: { name:'WeeBot Jeep STEM Classroom Robot Kit', price:5499, type:'classroom', image:'images/gallery-3.jpg', text:'Bring robotics into the classroom with a capable Bluetooth-controlled platform.' },
+    arduino: { name:'Arduino Uno KF2510 Robot Car Kit', price:8199, type:'classroom', image:'images/gallery-4.jpg', text:'A practical STEM build combining Arduino programming, electronics and robotics.' }
+  };
+  let activeFilter = 'all';
+  function filterProducts(filter, button) { activeFilter = filter; document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active')); button.classList.add('active'); renderProducts(); }
+  function renderProducts() {
+    const query = (document.getElementById('productSearch')?.value || '').toLowerCase();
+    const items = Object.entries(products).filter(([, product]) => (activeFilter === 'all' || product.type === activeFilter) && product.name.toLowerCase().includes(query));
+    document.getElementById('catalogStatus').textContent = `${items.length} ${items.length === 1 ? 'kit' : 'kits'} available`;
+    document.getElementById('productGrid').innerHTML = items.map(([id, product], index) => `<article class="product-card${index === 0 && activeFilter === 'all' ? ' featured-product' : ''}><div class="product-image"><img src="${product.image}" alt="${product.name}"><span class="product-badge product-badge-light">${product.type}</span></div><div class="product-body"><div class="product-meta"><span>IMVELAPHI LAB</span><span>South Africa</span></div><h4>${product.name}</h4><p>${product.text}</p><div class="product-bottom"><strong>R${product.price.toLocaleString()}</strong><button class="btn btn-primary btn-sm" onclick="addToCart('${id}')">Add to cart <i class="fa-solid fa-arrow-right"></i></button></div></div></article>`).join('') || '<p class="catalog-empty">No kits match that search. Try another name or category.</p>';
+  }
+  renderProducts();
+  let cart = JSON.parse(localStorage.getItem('imv_cart') || '{}');
+  function addToCart(id) { cart[id] = (cart[id] || 0) + 1; saveCart(); document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+  function saveCart() { localStorage.setItem('imv_cart', JSON.stringify(cart)); renderCart(); }
+  function updateCart(id, change) { cart[id] = (cart[id] || 0) + change; if (cart[id] <= 0) delete cart[id]; saveCart(); }
+  function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('open'); }
+  function renderCart() {
+    const entries = Object.entries(cart); const count = entries.reduce((sum, [, qty]) => sum + qty, 0); const total = entries.reduce((sum, [id, qty]) => sum + products[id].price * qty, 0);
+    document.getElementById('cartCount').textContent = count; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
+    document.getElementById('cartItems').innerHTML = entries.length ? entries.map(([id, qty]) => { const p = products[id]; return `<div class="cart-item"><img src="${p.image}" alt=""><div><strong>${p.name}</strong><span>R${p.price.toLocaleString()}</span><div class="qty"><button onclick="updateCart('${id}', -1)" aria-label="Decrease quantity">−</button><b>${qty}</b><button onclick="updateCart('${id}', 1)" aria-label="Increase quantity">+</button></div></div></div>`; }).join('') : '<div class="cart-empty"><i class="fa-solid fa-basket-shopping"></i><p>Your cart is waiting for its first build.</p><a href="#kits" onclick="toggleCart()">Browse kits</a></div>';
+  }
+  function beginCheckout() { if (!Object.keys(cart).length) return; window.location.href = 'checkout.html'; }
+  renderCart();
+
+  // If already logged in, send straight to the right dashboard
+  (function redirectIfSession(){
+    const u = STORE.currentUser();
+    if (u) {
+      if (u.role === 'lecturer') window.location.href = 'lecturer.html';
+      else if (u.role === 'admin') window.location.href = 'admin.html';
+      else window.location.href = 'dashboard.html';
+    }
+  })();
+
+  function openAuth(mode) {
+    document.getElementById('authModal').classList.add('open');
+    document.getElementById('alertMessage').style.display = 'none';
+    if (mode === 'register') showRegister(); else showLogin();
+  }
+  function closeAuth() { document.getElementById('authModal').classList.remove('open'); }
+
+  function showRegister() {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('authTitle').textContent = 'Create your student account';
+    document.getElementById('authSub').textContent = 'Join Imvelaphi Tech and start learning.';
+  }
+  function showLogin() {
+    document.getElementById('registerForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('authTitle').textContent = 'Welcome back';
+    document.getElementById('authSub').textContent = 'Log in to continue your courses.';
+  }
+  function showAlert(msg, type) {
+    const el = document.getElementById('alertMessage');
+    el.textContent = msg; el.className = 'alert alert-' + type; el.style.display = 'block';
+  }
+  function redirectForRole(role) {
+    if (role === 'lecturer') window.location.href = 'lecturer.html';
+    else if (role === 'admin') window.location.href = 'admin.html';
+    else window.location.href = 'dashboard.html';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.disabled = true; btn.textContent = 'Logging in…';
+    const res = await STORE.login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
+    if (res.success) { showAlert('Login successful — redirecting…','success'); setTimeout(()=>redirectForRole(res.user.role), 500); }
+    else { showAlert(res.message, 'error'); btn.disabled = false; btn.textContent = 'Log in'; }
+  });
+
+  document.getElementById('registerForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.disabled = true; btn.textContent = 'Creating account…';
+    const data = {
+      firstName: document.getElementById('regFirstName').value,
+      lastName: document.getElementById('regLastName').value,
+      age: Number(document.getElementById('regAge').value),
+      gender: document.getElementById('regGender').value,
+      location: document.getElementById('regLocation').value,
+      email: document.getElementById('regEmail').value,
+      password: document.getElementById('regPassword').value
+    };
+    const res = await STORE.register(data);
+    if (res.success) { showAlert('Account created — redirecting…','success'); setTimeout(()=>redirectForRole(res.user.role), 500); }
+    else { showAlert(res.message, 'error'); btn.disabled = false; btn.textContent = 'Create account'; }
+  });
+
+  document.getElementById('authModal').addEventListener('click', function(e){ if (e.target === this) closeAuth(); });
+</script>
+</body>
+</html>

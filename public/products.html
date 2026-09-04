@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop | Imvelaphi Technologies</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="shop-page">
+<nav class="navbar">
+  <a href="index.html" class="logo"><div class="mark"><img src="images/logo.png" alt="Imvelaphi Technologies logo"></div></a>
+  <div class="nav-links">
+    <a class="link hide-mobile" href="index.html#courses">Courses</a>
+    <a class="link hide-mobile shop-nav-active" href="products.html">Shop</a>
+    <a class="link hide-mobile" href="index.html#about">About</a>
+    <a class="cart-trigger" href="checkout.html" aria-label="Open shopping cart"><i class="fa-solid fa-basket-shopping"></i><span>Cart</span><b data-cart-count>0</b></a>
+    <a class="link" href="index.html">Log in</a>
+  </div>
+</nav>
+
+<header class="shop-hero">
+  <div class="container shop-hero-inner">
+    <div>
+      <div class="eyebrow">The Imvelaphi Lab Shop</div>
+      <h1>Tools for curious hands.</h1>
+      <p>Build robots, connect sensors and turn a good idea into a working prototype with kits selected for learners, classrooms and makers.</p>
+      <div class="shop-hero-notes"><span><i class="fa-solid fa-truck-fast"></i> South Africa delivery</span><span><i class="fa-solid fa-book-open"></i> Project guides included</span></div>
+    </div>
+    <div class="shop-hero-stamp"><strong>20+</strong><span>kits to<br>explore</span></div>
+  </div>
+</header>
+
+<main class="section shop-catalog-page">
+  <div class="container">
+    <div class="catalog-heading"><div><div class="eyebrow">Browse the catalogue</div><h2>Pick your next build.</h2></div><a class="btn btn-outline" href="checkout.html"><i class="fa-solid fa-basket-shopping"></i> View cart <span data-cart-count>0</span></a></div>
+    <div class="shop-toolbar catalog-toolbar">
+      <div class="shop-filters" role="group" aria-label="Filter products">
+        <button class="filter-chip shop-filter active" data-filter="all">All products</button>
+        <button class="filter-chip shop-filter" data-filter="starter">Starter</button>
+        <button class="filter-chip shop-filter" data-filter="classroom">Classroom</button>
+        <button class="filter-chip shop-filter" data-filter="advanced">Advanced</button>
+      </div>
+      <label class="shop-search"><i class="fa-solid fa-magnifying-glass"></i><input id="shopSearch" type="search" placeholder="Search products" oninput="renderShopGrid()"></label>
+    </div>
+    <div class="catalog-status" id="shopResultCount"></div>
+    <div class="product-grid" id="shopProductGrid"></div>
+    <div class="bulk-order"><div><span class="eyebrow">For schools and makerspaces</span><h3>Need a bigger build?</h3><p>Ask about classroom bundles, educator training and delivery for your institution.</p></div><a class="btn btn-outline" href="mailto:hello@imvelaphi.co.za?subject=Robotics%20kit%20bulk%20order">Request a quote <i class="fa-solid fa-arrow-right"></i></a></div>
+  </div>
+</main>
+
+<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><img src="images/logo.png" alt="Imvelaphi Technologies logo" class="footer-logo"><div><h5>Imvelaphi Technologies</h5><p>Robotics · Biotechnology · 3D printing · Skills development</p></div></div><div><h5>Shop</h5><p><a href="products.html" class="footer-link">All products</a></p><p><a href="checkout.html" class="footer-link">Your cart</a></p></div></div><div class="container fine">&copy; 2026 Imvelaphi Technologies Lab. All rights reserved.</div></footer>
+<script src="js/shop.js"></script>
+</body>
+</html>
