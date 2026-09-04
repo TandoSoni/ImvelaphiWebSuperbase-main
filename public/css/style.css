@@ -289,6 +289,9 @@ img { max-width:100%; display:block; }
 .order-form .field label span { color:var(--muted); font-weight:400; }
 .checkout-main .order-form input, .checkout-main .order-form textarea { width:100%; border:1px solid var(--line); border-radius:5px; background:#fffaf4; padding:11px 12px; font:inherit; color:#000; caret-color:#000; outline-color:var(--orange); }
 .checkout-main .order-form input::placeholder, .checkout-main .order-form textarea::placeholder { color:#665f58; opacity:1; }
+.field-error { display:block; min-height:0; color:#b42318; font-size:.75rem; margin-top:5px; }
+.field-error[hidden] { display:none; }
+.checkout-main .order-form input.has-error, .checkout-main .order-form textarea.has-error { border-color:#b42318; box-shadow:0 0 0 2px rgba(180,35,24,.12); }
 .order-form textarea { resize:vertical; }
 .checkout-total { border-top:1px solid var(--line); margin-top:22px; padding-top:16px; }
 .checkout-total > div { display:flex; justify-content:space-between; color:var(--muted); font-size:.85rem; margin-bottom:9px; }

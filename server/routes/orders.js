@@ -18,6 +18,12 @@ router.post('/', authOptional, async (req, res) => {
   if (typeof firstName !== 'string' || typeof lastName !== 'string' || typeof email !== 'string' || typeof phone !== 'string' || typeof address !== 'string' || !firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim() || !address.trim() || !Array.isArray(items) || !items.length) {
     return res.status(400).json({ success:false, message:'Customer details and at least one product are required.' });
   }
+  if (!/^[\p{L}][\p{L}\s'-]{1,49}$/u.test(firstName.trim()) || !/^[\p{L}][\p{L}\s'-]{1,49}$/u.test(lastName.trim())) {
+    return res.status(400).json({ success:false, message:'Names must contain letters only.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()) || !/^(?:\+27|0)[\d\s-]{9,15}$/.test(phone.trim())) {
+    return res.status(400).json({ success:false, message:'Enter a valid email address and phone number.' });
+  }
 
   const cleanItems = items.map(item => {
     const id = String(item.id || '');
