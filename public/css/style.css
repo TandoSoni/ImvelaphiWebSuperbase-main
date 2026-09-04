@@ -296,10 +296,11 @@ img { max-width:100%; display:block; }
 .checkout-total .grand-total { border-top:1px solid var(--line); margin-top:12px; padding-top:14px; font:700 1.15rem var(--font-display); color:var(--ink); }
 .checkout-note { color:var(--muted); font-size:.72rem; margin-top:13px; text-align:center; }
 .checkout-note i { color:var(--orange); margin-right:4px; }
-.order-success { text-align:center; padding:36px 10px 16px; }
-.order-success > i { color:var(--teal); font-size:3rem; margin-bottom:18px; }
+.order-success { text-align:center; padding:36px 18px 20px; border:1px solid #9ed6ad; border-radius:10px; background:#effaf1; }
+.order-success > i { color:#198754; font-size:3rem; margin-bottom:18px; }
 .order-success h2 { color:var(--ink); font:700 1.4rem var(--font-display); margin-bottom:8px; }
 .order-success p { color:var(--muted); font-size:.9rem; margin-bottom:22px; }
+.order-reference { display:block; color:#146c43; font-size:.82rem; margin:-8px 0 22px; }
 .checkout-secure { color:rgba(255,255,255,.7); font-size:.82rem; }
 .checkout-secure i { color:var(--teal); margin-right:6px; }
 
