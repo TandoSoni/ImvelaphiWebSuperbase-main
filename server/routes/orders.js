@@ -10,7 +10,10 @@ const PRODUCT_CATALOG = {
   starter:['Starter Maker Space Kit',34990], inventor:['Home Inventor Kit',3990], greenA:['Our Green World Python Kit',3990],
   weebot:['WeeBot mini STEM Robot V2.0',3990], aiot:['WeeCore Bot AIoT Robot',3990], elfK210:['ELF AIoT K210 Mainboard',3990],
   machine:['AI Machine Learning Advanced Pack',3990], lunar:['Lunar Exploration Field Kit',3990], iot:['IoT Learning Kit (ESP32)',4990],
-  jeep:['WeeBot Jeep Classroom Robot Kit',5499], arduino:['Arduino Uno Robot Car Kit',8199]
+  jeep:['WeeBot Jeep Classroom Robot Kit',5499], arduino:['Arduino Uno Robot Car Kit',8199],
+  'ard-starter':['Imvelaphi Arduino Starter Lab Kit',899],
+  'line-follower':['Line Follower Robot Kit',1499],
+  'prosthetic-hand':['3D-Printed Robotic Prosthetic Hand',4850]
 };
 
 router.post('/', authOptional, async (req, res) => {

@@ -21,6 +21,31 @@ const SHOP_PRODUCTS = {
   arduino: { name:'Arduino Uno Robot Car Kit', price:8199, type:'classroom', image:'images/gallery-4.jpg', text:'A practical STEM build combining Arduino, electronics and robotics.' }
 };
 
+async function loadShopProducts() {
+  try {
+    const { supabase } = await import('./supabase.js');
+    const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: true });
+    if (error) throw error;
+    if (!data?.length) return;
+    Object.keys(SHOP_PRODUCTS).forEach(id => delete SHOP_PRODUCTS[id]);
+    data.forEach(product => {
+      SHOP_PRODUCTS[product.id] = {
+        name: product.name,
+        price: product.price,
+        type: product.cat,
+        image: product.image || 'images/lab-hero.jpg',
+        text: product.desc || '',
+        oldPrice: product.old_price,
+        badge: product.badge
+      };
+    });
+    renderShopGrid();
+    renderCheckout();
+  } catch (error) {
+    console.warn('Supabase products unavailable; using the local shop catalogue.', error);
+  }
+}
+
 function shopMoney(value) { return `R${value.toLocaleString('en-ZA')}`; }
 function shopCart() { return JSON.parse(localStorage.getItem('imv_cart') || '{}'); }
 function saveShopCart(cart) {
@@ -75,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateShopCount();
   renderShopGrid();
   renderCheckout();
+  loadShopProducts();
   document.querySelectorAll('.shop-filter').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('.shop-filter').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
