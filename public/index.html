@@ -264,7 +264,7 @@
   }
   renderCourses();
 
-  const products = {
+  let products = {
     maker: { name:'Advanced Maker Space Kit', price:46990, type:'advanced', image:'images/photo-10.jpeg', text:'A complete maker-space foundation for deeper engineering projects and creative exploration.' },
     elf23: { name:'23-in-1 Customization Kit', price:10990, type:'classroom', image:'images/photo-11.jpeg', text:'Move beyond fixed models with a versatile platform for programming, design and systems thinking.' },
     elf24: { name:'24-in-1 Customization Kit', price:10990, type:'classroom', image:'images/photo-12.jpeg', text:'A STEM engineering platform with up to 24 different intelligent projects to build and test.' },
@@ -286,6 +286,26 @@
     jeep: { name:'WeeBot Jeep STEM Classroom Robot Kit', price:5499, type:'classroom', image:'images/gallery-3.jpg', text:'Bring robotics into the classroom with a capable Bluetooth-controlled platform.' },
     arduino: { name:'Arduino Uno KF2510 Robot Car Kit', price:8199, type:'classroom', image:'images/gallery-4.jpg', text:'A practical STEM build combining Arduino programming, electronics and robotics.' }
   };
+  async function loadProducts() {
+    try {
+      const { supabase } = await import('./js/supabase.js');
+      const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: true });
+      if (error) throw error;
+      if (!data?.length) return;
+      products = Object.fromEntries(data.map(product => [product.id, {
+        name: product.name,
+        price: product.price,
+        type: product.cat,
+        image: product.image || 'images/lab-hero.jpg',
+        text: product.desc || product.description || ''
+      }]));
+      console.log('Loaded from Supabase:', data);
+      renderProducts();
+      renderCart();
+    } catch (error) {
+      console.warn('Supabase products unavailable; using the local shop catalogue.', error);
+    }
+  }
   let activeFilter = 'all';
   function filterProducts(filter, button) { activeFilter = filter; document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active')); button.classList.add('active'); renderProducts(); }
   function renderProducts() {
@@ -301,12 +321,13 @@
   function updateCart(id, change) { cart[id] = (cart[id] || 0) + change; if (cart[id] <= 0) delete cart[id]; saveCart(); }
   function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('open'); }
   function renderCart() {
-    const entries = Object.entries(cart); const count = entries.reduce((sum, [, qty]) => sum + qty, 0); const total = entries.reduce((sum, [id, qty]) => sum + products[id].price * qty, 0);
+      const entries = Object.entries(cart).filter(([id]) => products[id]); const count = entries.reduce((sum, [, qty]) => sum + qty, 0); const total = entries.reduce((sum, [id, qty]) => sum + products[id].price * qty, 0);
     document.getElementById('cartCount').textContent = count; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
     document.getElementById('cartItems').innerHTML = entries.length ? entries.map(([id, qty]) => { const p = products[id]; return `<div class="cart-item"><img src="${p.image}" alt=""><div><strong>${p.name}</strong><span>R${p.price.toLocaleString()}</span><div class="qty"><button onclick="updateCart('${id}', -1)" aria-label="Decrease quantity">−</button><b>${qty}</b><button onclick="updateCart('${id}', 1)" aria-label="Increase quantity">+</button></div></div></div>`; }).join('') : '<div class="cart-empty"><i class="fa-solid fa-basket-shopping"></i><p>Your cart is waiting for its first build.</p><a href="#kits" onclick="toggleCart()">Browse kits</a></div>';
   }
   function beginCheckout() { if (!Object.keys(cart).length) return; window.location.href = 'checkout.html'; }
   renderCart();
+    loadProducts();
 
   // If already logged in, send straight to the right dashboard
   (function redirectIfSession(){
