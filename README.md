@@ -34,10 +34,38 @@ are available.
 
 ## Deployment
 
-Deploy the Node app to Render, Railway, Fly.io, or a VPS with `npm start`.
-Configure the variables in `.env.example` as host secrets and set
-`CLIENT_ORIGIN` to the deployed site origin. The app listens on the host's
-`PORT` value automatically.
+### Render and Supabase
+
+Deploy this project as a **Render Web Service**, not a Static Site. The
+repository-root `render.yaml` already configures Render to use
+`imvelaphi-lms` as the service root. The Node server serves both the frontend
+and `/api/*`, so the browser's relative API URLs work without a second
+frontend service.
+
+In Supabase, open **Project Settings -> Database -> Connection string -> URI**
+and copy the **Transaction pooler** or **Session pooler** URL. Add it in
+Render as the private `DATABASE_URL` environment variable. Do not put this
+URL in frontend JavaScript.
+
+Set these Render environment variables:
+
+```text
+NODE_ENV=production
+DATABASE_URL=postgresql://...
+ACCESS_TOKEN_SECRET=<generated-long-secret>
+REFRESH_TOKEN_SECRET=<different-generated-long-secret>
+CLIENT_ORIGIN=https://<your-render-service>.onrender.com
+```
+
+Use the service's own `onrender.com` URL for `CLIENT_ORIGIN` unless a custom
+domain is configured. The app creates its PostgreSQL tables and seed data on
+the first successful startup. Verify the connection at
+`https://<your-render-service>.onrender.com/health`, which should return
+`{"status":"ok"}`.
+
+For other hosts, deploy the Node app with `npm start`, configure the variables
+from `.env.example` as private host secrets, and set `CLIENT_ORIGIN` to the
+deployed site origin. The app listens on the host's `PORT` value automatically.
 
 For an IONOS subdomain, follow [IONOS_DEPLOYMENT.md](IONOS_DEPLOYMENT.md).
 
