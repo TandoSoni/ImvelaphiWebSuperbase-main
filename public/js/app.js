@@ -39,9 +39,14 @@ async function api(path, { method = 'GET', body, isForm = false, _retried = fals
   if (token) headers['Authorization'] = `Bearer ${token}`;
   if (!isForm) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(API_BASE + path, {
-    method, headers, body: body ? (isForm ? body : JSON.stringify(body)) : undefined
-  });
+  let res;
+  try {
+    res = await fetch(API_BASE + path, {
+      method, headers, body: body ? (isForm ? body : JSON.stringify(body)) : undefined
+    });
+  } catch {
+    return { success:false, message:'Unable to connect to the server. Please try again shortly.' };
+  }
 
   if (res.status === 401 && !_retried) {
     const refreshed = await tryRefresh();
@@ -49,7 +54,12 @@ async function api(path, { method = 'GET', body, isForm = false, _retried = fals
     STORE.logout(false);
   }
 
-  return res.json().catch(() => ({ success:false, message:'Unexpected server response.' }));
+  return res.json().catch(() => ({
+    success:false,
+    message: res.status === 404
+      ? 'The server API is not available at this address.'
+      : `The server returned an invalid response (HTTP ${res.status}).`
+  }));
 }
 
 const STORE = {
